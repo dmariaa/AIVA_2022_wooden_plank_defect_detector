@@ -13,3 +13,35 @@ previa a la proyección de la plantilla de corte que usan los sistemas de corte 
 De esta forma se hace posible automatizar la proyección de la plantilla evitando los defectos, y
 ahorrando costes de madera desperdiciada y/o piezas con defectos.
 
+## Como probar
+
+Hay que disponer de python 3.9.5 o superior. Se puede instalar un entorno virtual:
+
+```
+virtualenv -p {path al directio de python}/3.9/bin/python3 venv
+source venv/bin/activate
+```
+
+Instalar los requerimientos del proyecto.
+
+```
+python -m pip install -r requirements.txt
+```
+
+Asegurarse de que el directorio actual está en el path de python.
+
+```
+export PYTHONPATH=.:$PYTHONPATH
+```
+
+Ejecutar el servidor
+
+```
+python -u src/server.py
+```
+
+Para probar con una imagen:
+
+```
+python -u tools/server_test.py -i <path a la imagen de prueba>
+```
