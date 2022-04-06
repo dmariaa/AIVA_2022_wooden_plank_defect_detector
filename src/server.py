@@ -7,8 +7,6 @@ from flask_classful import FlaskView, route
 
 from src.defect_detector import DefectDetector
 
-app = Flask(__name__)
-
 
 class RestServer(FlaskView):
     excluded_methods = ['run']
@@ -48,6 +46,9 @@ class RestServer(FlaskView):
     def run(self):
         app.run(host='0.0.0.0', port=8080)
 
+
+app = Flask(__name__)
+RestServer.register(app)
 
 if __name__ == '__main__':
     server = RestServer()
