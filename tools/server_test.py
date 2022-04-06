@@ -31,7 +31,7 @@ def detect_image_defects(image):
         resp = requests.post('http://127.0.0.1:8080/detect_defects', data=json_message, headers=header)
         json_resp = resp.json()
 
-        if json_resp['result']=='ok':
+        if json_resp['result'] == 'ok':
             bytes = base64.b64decode(json_resp['data'].encode('utf-8'))
             image = cv2.imdecode(np.frombuffer(bytes, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
