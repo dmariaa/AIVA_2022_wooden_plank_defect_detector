@@ -19,8 +19,8 @@ def detect_image_defects(image):
         'image': base64_jpg.decode('utf-8'),
         'color-mappings': {
             'knot': (255, 0, 0),
-            'crack': (0, 255, 0),
-            'stain': (0, 0, 255)
+            # 'crack': (0, 255, 0),
+            # 'stain': (0, 0, 255)
         }
     }
 
@@ -33,7 +33,8 @@ def detect_image_defects(image):
 
         if json_resp['result'] == 'ok':
             bytes = base64.b64decode(json_resp['data'].encode('utf-8'))
-            image = cv2.imdecode(np.frombuffer(bytes, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
+            # image = cv2.imdecode(np.frombuffer(bytes, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
+            image = cv2.imdecode(np.frombuffer(bytes, dtype=np.uint8), cv2.IMREAD_COLOR)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             plt.imshow(image)
             plt.show()

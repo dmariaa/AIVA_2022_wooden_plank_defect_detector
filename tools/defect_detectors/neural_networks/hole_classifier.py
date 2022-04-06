@@ -1,10 +1,15 @@
+import glob
 import os.path
 import pickle
+import time
 
+import cv2
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers, Model
 from sklearn.model_selection import train_test_split
+
+from src.image_tools import image_file_sorter
 
 
 def create_model(input_shape: tuple):
@@ -43,7 +48,7 @@ def prepare_data(images: list, bboxes: list):
             b = bbox[0]
 
             image = images[i]
-            image_width, image_height, _ = image.shape
+            image_height, image_width, _ = image.shape
 
             # transform (x1, y1, x2, y2) to (x, y, w, h)
             b[2] = b[2] - b[0]
@@ -52,8 +57,8 @@ def prepare_data(images: list, bboxes: list):
             # normalize b to 0-1 range
             b[0] = b[0] / image_width
             b[2] = b[2] / image_width
-            b[1] = b[1] / image_width
-            b[3] = b[3] / image_width
+            b[1] = b[1] / image_height
+            b[3] = b[3] / image_height
 
             single_bboxes[i] = b
 
@@ -76,7 +81,7 @@ def load_pickle_file(pickle_file):
     return images, bboxes
 
 
-def train(data: str, lr: float = 1e-4, batch_size: int = 5, epochs: int = 100):
+def train(data: str, output: str, lr: float = 1e-4, batch_size: int = 5, epochs: int = 100):
     if os.path.isfile(data):
         images, bboxes = load_pickle_file(data)
 
@@ -95,6 +100,43 @@ def train(data: str, lr: float = 1e-4, batch_size: int = 5, epochs: int = 100):
               shuffle=True,
               verbose=1)
 
+    model.save_weights(os.path.join(output, f"knot_classifier_{time.time():.0f}"))
+    model.save(os.path.join(output, f"knot_classifier_{time.time():.0f}.h5"))
+
+
+def paint_bounding_boxes(image, bboxes, **kwargs):
+    output_image = image.copy()
+
+    for x, y, w, h in bboxes.astype(int):
+        output_image = cv2.rectangle(img=output_image, pt1=(x, y), pt2=(x + w, y + h), **kwargs)
+
+    return output_image
+
+
+def predictions_test(data: str, out: str):
+    image_files = sorted(glob.glob(os.path.join(data, "*.png")), key=image_file_sorter)
+
+    model = tf.keras.models.load_model(out)
+
+    y_preds = []
+
+    for image_file in image_files:
+        image = cv2.imread(image_file)
+        predict_image = image.copy() / 255.
+        y_pred = model.predict(predict_image[np.newaxis, ...])
+
+        x, y, w, h = y_pred[0]
+        image_height, image_width, _ = image.shape
+
+        x = x * image_width
+        w = w * image_width
+        y = y * image_height
+        h = h * image_height
+
+        image = paint_bounding_boxes(image, np.array([[x, y, w, h]]).astype(int), color=(0, 255, 0))
+        file_name = os.path.basename(image_file)
+        cv2.imwrite(os.path.join("outfiles", file_name), image)
+
 
 if __name__ == "__main__":
     import argparse
@@ -106,10 +148,16 @@ if __name__ == "__main__":
                             help="Dataset folder or pickle file",
                             required=True,
                             type=str)
+
+        parser.add_argument("-o", "--output",
+                            help="Path to save trained model weights",
+                            required=True,
+                            type=str)
         return parser
 
     args = options().parse_args()
     data = args.data
+    output_folder = args.output
 
-    model = create_model((1000, 100, 3))
-    train(data)
+    # train(data, output_folder, epochs=50)
+    predictions_test(data, output_folder)
