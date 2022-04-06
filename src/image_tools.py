@@ -20,9 +20,12 @@ def get_bounding_boxes(bbox_file):
 
 
 def paint_bounding_boxes(image, bboxes, **kwargs):
+    output_image = image.copy()
+
     for x1, y1, x2, y2 in bboxes.astype(int):
-        image = cv2.rectangle(image, pt1=(x1, y1), pt2=(x2, y2), **kwargs)
-    return image
+        output_image = cv2.rectangle(img=output_image, pt1=(x1, y1), pt2=(x2, y2), **kwargs)
+
+    return output_image
 
 
 def image_file_sorter(file):

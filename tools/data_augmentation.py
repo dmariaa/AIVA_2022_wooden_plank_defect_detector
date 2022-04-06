@@ -1,3 +1,4 @@
+import argparse
 import glob
 import os.path
 import pickle
@@ -79,32 +80,61 @@ def augment_images(images_folder: str, number_of_augmentations: int = 10):
 
 
 if __name__ == "__main__":
-    folder = "../muestras/train"
-    output_folder = "../output/augmented"
+    import argparse
+
+    def options():
+        parser = argparse.ArgumentParser()
+
+        parser.add_argument("-i", "--input",
+                            help="Input folder with images and ground truth",
+                            required=True,
+                            type=str)
+
+        parser.add_argument("-o", "--output",
+                            help="Output folder, generated data will be here",
+                            required=True,
+                            type=str)
+
+        parser.add_argument("-n",
+                            help="Number of augmentation iterations to do",
+                            type=int,
+                            default=10)
+
+        return parser
+
+    args = options().parse_args()
+    folder = args.input
+    output_folder = args.output
+    num_aug = args.n
 
     # generate augmented dataset
-    images, bboxes = augment_images(folder)
+    print(f"Augmenting images...")
+    images, bboxes = augment_images(folder, number_of_augmentations=num_aug)
 
     # save as pickle file
-    with open("../muestras/train_augmented.pkl", 'wb') as pickle_file:
+    with open(os.path.join(output_folder, "train_augmented.pkl"), 'wb') as pickle_file:
          pickle.dump({
              'images': images,
              'bboxes': bboxes
          }, pickle_file)
          pickle_file.close()
 
-    # load pickle file
-    with open("../muestras/train_augmented.pkl", 'rb') as pickle_file:
-        data = pickle.load(pickle_file)
-        pickle_file.close()
-
-    images = data['images']
-    bboxes = data['bboxes']
+    # # load pickle file
+    # TODO: This should be in a test
+    # with open(os.path.join(output_folder, "train_augmented.pkl"), 'rb') as pickle_file:
+    #     data = pickle.load(pickle_file)
+    #     pickle_file.close()
+    #
+    # images = data['images']
+    # bboxes = data['bboxes']
 
     # paint bounding boxes and save images
     for i, image in enumerate(images):
         image_bboxes: BoundingBoxesOnImage = bboxes[i]
         image_bboxes_rects = image_bboxes.to_xyxy_array()
 
-        image = paint_bounding_boxes(image, image_bboxes_rects, color=(255, 0, 0))
+        image = paint_bounding_boxes(image, image_bboxes_rects, color=(255, 0, 0), thickness=1)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         cv2.imwrite(os.path.join(output_folder, f"{i}.png"), image)
+
+    print(f"{len(images)} augmented images ready")
