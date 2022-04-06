@@ -75,3 +75,8 @@ def test_image():
 def test_ground_truth():
     image = cv2.imread("./data/1-defects.png")
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+
+@pytest.fixture()
+def bbox_file():
+    return "./data/1.reg"
