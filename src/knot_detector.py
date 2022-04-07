@@ -10,7 +10,7 @@ class KnotDetector(DefectDetectorBase):
         super(KnotDetector, self).__init__()
         self.detectors = None
         self.color_mappings = None
-        self.model_file = "../models/current-model.h5"
+        self.model_file = "models/current-model.h5"
         self.model = tf.keras.models.load_model(self.model_file)
 
     def set_color_mapping(self, mappings: dict) -> None:
