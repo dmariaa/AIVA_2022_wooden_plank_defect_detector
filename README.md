@@ -15,6 +15,10 @@ ahorrando costes de madera desperdiciada y/o piezas con defectos.
 
 ## Como probar
 
+Clonar este repositorio. Crear la carpeta "models", descargar el modelo actual de google drive y copiarlo en esta carpeta:
+
+https://drive.google.com/file/d/1leux1CMUnWyWtVcIaJ7kyMKs3c8WvA3K/view?usp=sharing
+
 Hay que disponer de python 3.9.5 o superior. Se puede instalar un entorno virtual:
 
 ```
