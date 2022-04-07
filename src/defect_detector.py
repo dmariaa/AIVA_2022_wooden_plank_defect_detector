@@ -12,8 +12,8 @@ class DefectDetector(DefectDetectorBase):
 
         self.detectors = {
             'knot': KnotDetector(),
-            'crack': CrackDetector(),
-            'stain': StainDetector()
+            # 'crack': CrackDetector(),
+            # 'stain': StainDetector()
         }
 
         self.color_mappings: dict = None

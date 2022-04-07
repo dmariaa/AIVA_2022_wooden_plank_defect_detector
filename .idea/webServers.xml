@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="60003717-6ed0-4618-bb30-5100d4d5840f" name="urjc-corleone">
+        <fileTransfer rootFolder="/home/dmarribas/ayc" accessType="SFTP" host="212.128.243.155" port="22" sshConfigId="2d8f5305-9ac5-4ead-8b19-9301ad6245b2" sshConfig="dmarribas@212.128.243.155:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
