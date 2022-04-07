@@ -52,7 +52,7 @@ def prepare_data(images: list, bboxes: list):
 
             # transform (x1, y1, x2, y2) to (x, y, w, h)
             b[2] = b[2] - b[0]
-            b[3] = b[3] - b[0]
+            b[3] = b[3] - b[1]
 
             # normalize b to 0-1 range
             b[0] = b[0] / image_width
@@ -104,40 +104,6 @@ def train(data: str, output: str, lr: float = 1e-4, batch_size: int = 5, epochs:
     model.save(os.path.join(output, f"knot_classifier_{time.time():.0f}.h5"))
 
 
-def paint_bounding_boxes(image, bboxes, **kwargs):
-    output_image = image.copy()
-
-    for x, y, w, h in bboxes.astype(int):
-        output_image = cv2.rectangle(img=output_image, pt1=(x, y), pt2=(x + w, y + h), **kwargs)
-
-    return output_image
-
-
-def predictions_test(data: str, out: str):
-    image_files = sorted(glob.glob(os.path.join(data, "*.png")), key=image_file_sorter)
-
-    model = tf.keras.models.load_model(out)
-
-    y_preds = []
-
-    for image_file in image_files:
-        image = cv2.imread(image_file)
-        predict_image = image.copy() / 255.
-        y_pred = model.predict(predict_image[np.newaxis, ...])
-
-        x, y, w, h = y_pred[0]
-        image_height, image_width, _ = image.shape
-
-        x = x * image_width
-        w = w * image_width
-        y = y * image_height
-        h = h * image_height
-
-        image = paint_bounding_boxes(image, np.array([[x, y, w, h]]).astype(int), color=(0, 255, 0))
-        file_name = os.path.basename(image_file)
-        cv2.imwrite(os.path.join("outfiles", file_name), image)
-
-
 if __name__ == "__main__":
     import argparse
 
@@ -159,5 +125,4 @@ if __name__ == "__main__":
     data = args.data
     output_folder = args.output
 
-    # train(data, output_folder, epochs=50)
-    predictions_test(data, output_folder)
+    train(data, output_folder, epochs=100)

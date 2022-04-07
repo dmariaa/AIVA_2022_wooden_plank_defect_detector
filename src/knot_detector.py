@@ -1,6 +1,7 @@
 import numpy as np
 import cv2.cv2 as cv2
 from src.defect_detector_base import DefectDetectorBase
+import tensorflow as tf
 from tensorflow.keras import layers, Model
 
 
@@ -9,25 +10,28 @@ class KnotDetector(DefectDetectorBase):
         super(KnotDetector, self).__init__()
         self.detectors = None
         self.color_mappings = None
+        self.model_file = "../models/current-model.h5"
+        self.model = tf.keras.models.load_model(self.model_file)
 
     def set_color_mapping(self, mappings: dict) -> None:
         self.color_mappings = mappings
 
     def detect_defects(self, image: np.ndarray) -> np.ndarray:
-        model: Model = self.create_model(image.shape)
-        model.load_weights("../models/knot_classifier_1649238829")
+        # model: Model = self.create_model(image.shape)
+        # model.load_weights("../models/knot_classifier_1649238829")
 
-        y_pred = model.predict(image[np.newaxis, ...])
+        predict_image = image.copy() / 255.
+        y_pred = self.model.predict(predict_image[np.newaxis, ...])
 
         height, width, _ = image.shape
 
         if y_pred.shape[0] > 0:
             x, y, w, h = y_pred[0]
-            x = x * width
-            w = w * width
-            y = y * width
-            h = h * width
-            # image = cv2.rectangle(image, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0))
+            x = int(x * width)
+            w = int(w * width)
+            y = int(y * height)
+            h = int(h * height)
+            image = cv2.rectangle(image, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0))
 
         return image
 

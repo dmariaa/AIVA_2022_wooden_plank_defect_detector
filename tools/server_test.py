@@ -38,9 +38,15 @@ def detect_image_defects(image):
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             plt.imshow(image)
             plt.show()
+        else:
+            print(f"The server returned an error")
+            print(json_resp['message'])
 
     except requests.exceptions.ConnectionError:
         print("The server is not running. Please start the server first by running python src/server.py")
+
+    except Exception as e:
+        raise e
 
 
 if __name__ == "__main__":
