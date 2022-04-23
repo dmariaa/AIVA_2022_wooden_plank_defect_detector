@@ -1,4 +1,4 @@
-name: Python package
+name: Defect Detector deployment
 
 on: [push]
 
