@@ -49,3 +49,7 @@ Para probar con una imagen:
 ```
 python -u tools/server_test.py -i <path a la imagen de prueba>
 ```
+
+## Los modelos se encuentran en
+
+https://urjc-my.sharepoint.com/:f:/g/personal/d_maria_2016_alumnos_urjc_es/Ehjcvg8zUqxHq0klAELnW58BL6_2VcvGACptPuaWdN7HGw?e=iIzfuH

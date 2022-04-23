@@ -45,7 +45,7 @@ class DefectDetectorMockup(DefectDetectorBase):
         return cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB)
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def detector():
     return DefectDetector()
 

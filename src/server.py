@@ -1,6 +1,9 @@
 import base64
+import os
+
 import cv2.cv2 as cv2
 import numpy as np
+import yaml
 
 from flask import Flask, request, json, abort, make_response, jsonify
 from flask_classful import FlaskView, route
@@ -9,12 +12,12 @@ from defect_detector import DefectDetector
 
 
 class RestServer(FlaskView):
-    excluded_methods = ['run']
+    excluded_methods = ['start_server']
     route_base = '/'
+    defect_detector = DefectDetector()
 
     def __init__(self):
         super(RestServer, self).__init__()
-        self.defect_detector = DefectDetector()
 
     @route('/detect_defects', methods=['POST'])
     def post_detect_defects(self):
@@ -47,13 +50,21 @@ class RestServer(FlaskView):
     def get_root(self):
         return 'OK'
 
-    def start_server(self):
-        app.run(host='0.0.0.0', port=8080)
 
+def get_server_config():
+    config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.yaml')
+    if not os.path.exists(config_file):
+        raise FileNotFoundError(f"Configuration file {config_file} not found.")
 
-app = Flask(__name__)
-RestServer.register(app)
+    with open(config_file, 'r') as f:
+        config = yaml.safe_load(f)
+
+    server_config = config['SERVER']
+    return server_config
+
 
 if __name__ == '__main__':
-    server = RestServer()
-    server.start_server()
+    server_config = get_server_config()
+    app = Flask(__name__)
+    RestServer.register(app)
+    app.run(host=server_config['HOST'], port=server_config['PORT'])
