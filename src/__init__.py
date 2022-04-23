@@ -1,4 +1,5 @@
-from .crack_detector import CrackDetector
-from .defect_detector_base import DefectDetectorBase, InvalidColorMappingException
-from .knot_detector import KnotDetector
-from .stain_detector import StainDetector
+import os
+import sys
+PROJECT_PATH = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(PROJECT_PATH)
+sys.path.append(os.getcwd())

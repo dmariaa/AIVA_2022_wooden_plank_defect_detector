@@ -5,7 +5,7 @@ import numpy as np
 from flask import Flask, request, json, abort, make_response, jsonify
 from flask_classful import FlaskView, route
 
-from src.defect_detector import DefectDetector
+from defect_detector import DefectDetector
 
 
 class RestServer(FlaskView):
@@ -43,7 +43,11 @@ class RestServer(FlaskView):
             'message': 'Unknown error, please contact service provider.'
         }), 500)
 
-    def run(self):
+    @route('/', methods=['GET'])
+    def get_root(self):
+        return 'OK'
+
+    def start_server(self):
         app.run(host='0.0.0.0', port=8080)
 
 
@@ -52,4 +56,4 @@ RestServer.register(app)
 
 if __name__ == '__main__':
     server = RestServer()
-    server.run()
+    server.start_server()

@@ -1,10 +1,14 @@
+import os.path
+
 import numpy as np
 import cv2.cv2 as cv2
 import pytest
 
-from src import DefectDetectorBase, InvalidColorMappingException
+from src.defect_detector_base import DefectDetectorBase, InvalidColorMappingException
 from src.defect_detector import DefectDetector
 from src.defect_detector_base import InvalidInputException
+
+current_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 class DefectDetectorMockup(DefectDetectorBase):
@@ -48,12 +52,12 @@ def detector():
 
 @pytest.fixture()
 def grayscale_image():
-    return np.zeros((488, 442))
+    return np.zeros((442, 488))
 
 
 @pytest.fixture()
 def color_image():
-    return np.zeros((488, 442, 3))
+    return np.zeros((442, 488, 3))
 
 
 @pytest.fixture()
@@ -67,16 +71,16 @@ def color_mappings():
 
 @pytest.fixture()
 def test_image():
-    image = cv2.imread("./data/1.png")
+    image = cv2.imread(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "1.png"))
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 
 @pytest.fixture()
 def test_ground_truth():
-    image = cv2.imread("./data/1-defects.png")
+    image = cv2.imread(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "1-defects.png"))
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 
 @pytest.fixture()
 def bbox_file():
-    return "./data/1.reg"
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "1.reg")
