@@ -1,8 +1,18 @@
+import os
+import os.path
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import numpy as np
 import cv2.cv2 as cv2
 from src.defect_detector_base import DefectDetectorBase
+
 import tensorflow as tf
 from tensorflow.keras import layers, Model
+
+tf.get_logger().setLevel('ERROR')
+
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 class KnotDetector(DefectDetectorBase):
@@ -10,7 +20,7 @@ class KnotDetector(DefectDetectorBase):
         super(KnotDetector, self).__init__()
         self.detectors = None
         self.color_mappings = None
-        self.model_file = "models/current-model.h5"
+        self.model_file = os.path.join(self.current_folder, "models", "knot_classifier_1649252255.h5")
         self.model = tf.keras.models.load_model(self.model_file)
 
     def set_color_mapping(self, mappings: dict) -> None:

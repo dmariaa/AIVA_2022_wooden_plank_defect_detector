@@ -32,3 +32,11 @@ def image_file_sorter(file):
     dir = os.path.dirname(file)
     f, ext = os.path.splitext(os.path.basename(file))
     return f"{dir}{int(f):05d}"
+
+
+def image_dir_sorter(dir):
+    if os.path.isfile(dir):
+        return 1e7
+
+    last = os.path.split(dir)[-1]
+    return f"{int(last):05d}"

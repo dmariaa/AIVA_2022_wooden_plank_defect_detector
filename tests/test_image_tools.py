@@ -1,5 +1,5 @@
 import pytest
-from fixtures import *
+from .fixtures import *
 
 from src.image_tools import get_bounding_boxes
 

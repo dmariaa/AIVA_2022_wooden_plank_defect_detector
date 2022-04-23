@@ -1,12 +1,27 @@
+import os
+import yaml
+
 import numpy as np
 
 
 class DefectDetectorBase:
+    def __init__(self):
+        self.current_folder = os.path.dirname(os.path.realpath(__file__))
+        self.config = self.__read_config()
+
+    def __read_config(self):
+        config_file = os.path.join(self.current_folder, 'config.yaml')
+        if not os.path.exists(config_file):
+            raise FileNotFoundError(f"Configuration file {config_file} not found.")
+
+        with open(config_file, 'r') as f:
+            return yaml.safe_load(f)
+
     def detect_defects(self, image: np.ndarray) -> np.ndarray:
-        raise Exception("Not implemented")
+        raise NotImplementedError()
 
     def set_color_mapping(self, mappings: dict) -> None:
-        raise Exception("Not implemented")
+        raise NotImplementedError()
 
 
 class DefectDetectorException(Exception):

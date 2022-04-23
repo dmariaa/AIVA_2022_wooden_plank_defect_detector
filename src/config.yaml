@@ -1,0 +1,9 @@
+DETECTION:
+    DETECTORS_FOLDER: detectors
+    MODELS_FOLDER: models
+    DEBUG_LEVEL: error
+
+SERVER:
+    HOST: 0.0.0.0
+    PORT: 8080
+    
