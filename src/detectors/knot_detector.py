@@ -1,6 +1,8 @@
 import os
 import os.path
 
+from tools.download_tools import onedrive_download, google_drive_download
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import numpy as np
@@ -11,16 +13,21 @@ import tensorflow as tf
 from tensorflow.keras import layers, Model
 
 tf.get_logger().setLevel('ERROR')
-
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 class KnotDetector(DefectDetectorBase):
+    MODEL_URL = "https://drive.google.com/uc?id=1leux1CMUnWyWtVcIaJ7kyMKs3c8WvA3K"
+
     def __init__(self):
         super(KnotDetector, self).__init__()
         self.detectors = None
         self.color_mappings = None
-        self.model_file = os.path.join(self.current_folder, "models", "knot_classifier_1649252255.h5")
+        self.__load_model()
+
+    def __load_model(self):
+        self.model_file = os.path.join(self.models_folder, "knot-detector-model.h5")
+        google_drive_download(KnotDetector.MODEL_URL, self.model_file)
         self.model = tf.keras.models.load_model(self.model_file)
 
     def set_color_mapping(self, mappings: dict) -> None:
@@ -44,26 +51,3 @@ class KnotDetector(DefectDetectorBase):
             image = cv2.rectangle(image, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0))
 
         return image
-
-    def create_model(self, input_shape: tuple):
-        # create the common input layer
-        input_layer = layers.Input(input_shape)
-
-        # create the base layers
-        base_layers = layers.Conv2D(16, 3, padding='same', activation='relu', name='bl_2')(input_layer)
-        base_layers = layers.MaxPooling2D(name='bl_3')(base_layers)
-        base_layers = layers.Conv2D(32, 3, padding='same', activation='relu', name='bl_4')(base_layers)
-        base_layers = layers.MaxPooling2D(name='bl_5')(base_layers)
-        base_layers = layers.Conv2D(64, 3, padding='same', activation='relu', name='bl_6')(base_layers)
-        base_layers = layers.MaxPooling2D(name='bl_7')(base_layers)
-        base_layers = layers.Flatten(name='bl_8')(base_layers)
-
-        # create the localiser branch
-        locator_branch = layers.Dense(128, activation='relu', name='bb_1')(base_layers)
-        locator_branch = layers.Dense(64, activation='relu', name='bb_2')(locator_branch)
-        locator_branch = layers.Dense(32, activation='relu', name='bb_3')(locator_branch)
-        locator_branch = layers.Dense(4, activation='sigmoid', name='bb_head')(locator_branch)
-
-        model = Model(input_layer, outputs=[locator_branch])
-
-        return model

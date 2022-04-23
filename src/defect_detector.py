@@ -11,9 +11,6 @@ from defect_detector_base import DefectDetectorBase, InvalidColorMappingExceptio
 class DefectDetector(DefectDetectorBase):
     def __init__(self):
         super(DefectDetector, self).__init__()
-
-        self.detectors_folder = os.path.join(self.current_folder, self.config['DETECTION']['DETECTORS_FOLDER'])
-
         self.detectors = self.__load_detectors()
         self.color_mappings: dict = None
 

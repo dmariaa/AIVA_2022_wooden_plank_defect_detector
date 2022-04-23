@@ -9,6 +9,9 @@ class DefectDetectorBase:
         self.current_folder = os.path.dirname(os.path.realpath(__file__))
         self.config = self.__read_config()
 
+        self.detectors_folder = os.path.join(self.current_folder, self.config['DETECTION']['DETECTORS_FOLDER'])
+        self.models_folder = os.path.join(self.current_folder, self.config['DETECTION']['MODELS_FOLDER'])
+
     def __read_config(self):
         config_file = os.path.join(self.current_folder, 'config.yaml')
         if not os.path.exists(config_file):
