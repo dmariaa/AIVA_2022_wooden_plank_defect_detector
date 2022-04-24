@@ -36,12 +36,27 @@ class SegmentationDetectorBase(DefectDetectorBase):
         google_drive_download(self.MODEL_DRIVE_ID, self.model_file)
         self.model = tf.keras.models.load_model(self.model_file)
 
+    def _normalize_image(self, image):
+        image = image.copy() / 255.
+        image = np.pad(image, ((3, 3), (4, 4), (0, 0)))
+        return image
+
     def set_color_mapping(self, mappings: dict) -> None:
         self.color_mappings = mappings
 
     def detect_defects(self, image: np.ndarray) -> np.ndarray:
         color = self.color_mappings[self.DEFECT_TYPE]
-        predict_image = image.copy() / 255.
-        # y_pred = self.model.predict(predict_image[np.newaxis, ...])
-        y_pred = np.zeros(image.shape)
-        return y_pred
+        predict_image = self._normalize_image(image)
+        y_pred = self.model.predict(predict_image[np.newaxis, ...])
+
+        # Resize, threshold and binarize
+        y_pred = y_pred[0, 3:-3, 4:-4, :]
+        y_pred.copy().reshape(y_pred.shape[:-1])
+        y_pred[y_pred >= 0.5] = 1.0
+        y_pred[y_pred < 0.5] = 0.0
+
+        # apply_color_mapping
+        y_pred_color = cv2.cvtColor(y_pred, cv2.COLOR_GRAY2RGB)
+        y_pred_color *= color
+
+        return y_pred_color
