@@ -1,6 +1,7 @@
 name: Defect Detector deployment
 
-on: [push]
+on: 
+  [workflow_call]
 
 jobs:
   build:
