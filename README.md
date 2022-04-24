@@ -3,6 +3,8 @@
 Este es un trabajo para la asignatura Aplicaciones Industriales y Comerciales de la Visión Artificial, en el Master 
 Universitario en Visión Artificial de la URJC.
 
+[![Deployment](https://github.com/dmariaa/AIVA_2022_wooden_plank_defect_detector/actions/workflows/deployment.yml/badge.svg)](https://github.com/dmariaa/AIVA_2022_wooden_plank_defect_detector/actions/workflows/deployment.yml)
+
 ## Proyecto a desarrollar
 
 En este proyecto se desarrollará un módulo para la detección de anomalías en tableros de madera. Este 
