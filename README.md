@@ -15,7 +15,19 @@ previa a la proyección de la plantilla de corte que usan los sistemas de corte 
 De esta forma se hace posible automatizar la proyección de la plantilla evitando los defectos, y
 ahorrando costes de madera desperdiciada y/o piezas con defectos.
 
-## Como probar
+## Como desplegar y testear
+
+Para deplegar y testear la última versión, tan solo hay que ejecutar el contenedor docker que contiene esta versión.
+
+```
+docker run -p 8080:8080 dmariaa/aiyc-defect-detector:v1.0.0
+```
+
+Una vez ejecutado, tan solo hay que abrir un navegador web y acceder a:
+
+http://localhost:8080
+
+## Como probar y modificar el código 
 
 Clonar este repositorio. Crear la carpeta "models", descargar el modelo actual de google drive y copiarlo en esta carpeta:
 
