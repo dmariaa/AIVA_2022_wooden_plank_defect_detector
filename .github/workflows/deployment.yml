@@ -1,4 +1,4 @@
-name: Defect Detector deployment
+name: Unit testing
 
 on: 
   [workflow_call]
