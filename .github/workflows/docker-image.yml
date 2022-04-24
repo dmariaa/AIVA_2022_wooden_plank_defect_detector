@@ -1,0 +1,15 @@
+name: Docker Image CI
+
+on:
+  [workflow_call]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file docker/Dockerfile --tag dmariaa/aiyc-defect-detector:$(date +%s)
