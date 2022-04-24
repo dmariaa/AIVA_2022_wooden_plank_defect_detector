@@ -5,7 +5,7 @@ import cv2.cv2 as cv2
 import numpy as np
 import yaml
 
-from flask import Flask, request, json, abort, make_response, jsonify
+from flask import Flask, request, json, abort, make_response, jsonify, render_template
 from flask_classful import FlaskView, route
 
 from defect_detector import DefectDetector
@@ -48,7 +48,10 @@ class RestServer(FlaskView):
 
     @route('/', methods=['GET'])
     def get_root(self):
-        return 'OK'
+        resp = make_response(render_template('index.html'), 200)
+        resp.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        resp.headers["Pragma"] = "no-cache"
+        return resp
 
 
 def get_server_config():
@@ -65,6 +68,7 @@ def get_server_config():
 
 if __name__ == '__main__':
     server_config = get_server_config()
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='html/static', template_folder='html/templates')
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     RestServer.register(app)
     app.run(host=server_config['HOST'], port=server_config['PORT'])
