@@ -16,4 +16,5 @@ jobs:
   unit-test:
     uses: ./.github/workflows/unit-testing.yml
   build-docker:
+    needs: unit-test
     uses: ./.github/workflows/docker-image.yml
