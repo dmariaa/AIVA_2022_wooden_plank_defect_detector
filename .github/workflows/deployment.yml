@@ -19,6 +19,6 @@ jobs:
     needs: unit-test
     uses: ./.github/workflows/docker-image.yml
     with:
-      username: ${{ secrets.DOCKER_HUB_USERNAME }}
+      username: dmariaa
     secrets:
       token: ${{ secrets.DOCKER_HUB_TOKEN }}
