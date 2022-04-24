@@ -1,0 +1,62 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.title {
+    color: #a900d8;
+    margin: 0;
+    font-size: 2em;
+    padding: 24px 0px;
+}
+
+div.message, div.test {
+    font-size: 1.2em;
+}
+
+pre.json {
+    background: #000;
+    display: block;
+    padding: 8px;
+    font-family: monospace;
+    color: #fff;
+}
+
+div.test {
+    padding: 4px;
+    background-color: #a900d8;
+}
+
+.button {
+    background-color: #a900d8;
+    color: #fff;
+    padding: 64px 32px;
+    border: 2px dashed #fff;
+}
+
+div.test.dragover, div.test.dragover * {
+    background-color: #c800ff;
+}
+
+div.results {
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+}
+
+div.results .image {
+    margin-right: 4px;
+}
+
+div.results .prediction {
+    margin-left: 4px;
+}

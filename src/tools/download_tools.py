@@ -6,13 +6,14 @@ import shutil
 import gdown
 
 
-def google_drive_download(link: str, destinaton_file: str):
+def google_drive_download(model_drive_id: str, destination_file: str):
     # Make sure the base directory for destination file exists
-    base_dir = os.path.dirname(destinaton_file)
+    base_dir = os.path.dirname(destination_file)
     if not os.path.exists(base_dir):
         os.mkdir(base_dir)
 
-    gdown.download(link, destinaton_file, quiet=False)
+    drive_link = f"https://drive.google.com/uc?id={model_drive_id}"
+    gdown.download(drive_link, destination_file, quiet=False)
 
 
 def onedrive_download(link: str, destination_file: str):

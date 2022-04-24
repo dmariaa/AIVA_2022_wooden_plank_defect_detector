@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AIYC detector de defectos</title>
+    <link href="/static/main.css" rel="stylesheet"/>
+</head>
+<body>
+    <H1 class="title">Detector de defectos AIYC</H1>
+    <div class="message">
+        Para usar el detector de defectos, enviar un request POST a la url /detect_defects con un body:
+        <pre class="json">
+{
+    'image': [imagen codificada en base64],
+    'color-mappings': {
+        'knot': (255, 0, 0),
+        'crack': (0, 255, 0),
+        'stain': (0, 0, 255)
+    }
+}</pre>
+    </div>
+    <div class="test">
+        <div class="button upload-button">Para probar el detector arrastrar una imagen a este área.</div>
+    </div>
+    <div class="results">
+        <div class="image"></div>
+        <div class="prediction"></div>
+    </div>
+    <script src="/static/test.js"></script>
+</body>
+</html>

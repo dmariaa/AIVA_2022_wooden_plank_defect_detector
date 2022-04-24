@@ -1,16 +1,7 @@
-import numpy as np
-
-from src.defect_detector_base import DefectDetectorBase
+from segmentation_detector_base import SegmentationDetectorBase
 
 
-class StainDetector(DefectDetectorBase):
-    def __init__(self):
-        super(StainDetector, self).__init__()
-        self.detectors = None
-        self.color_mappings = None
-
-    def set_color_mapping(self, mappings: dict) -> None:
-        self.color_mappings = mappings
-
-    def detect_defects(self, image: np.ndarray) -> np.ndarray:
-        return np.zeros(image.shape)
+class StainDetector(SegmentationDetectorBase):
+    MODEL_DRIVE_ID = "1nimIoJLwzEBIn0j8w5Q5N75gzAS5nwRA"
+    DEFECT_TYPE = "stain"
+    MODEL_LOCAL_NAME = "stain-detector-model.h5"

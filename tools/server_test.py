@@ -19,8 +19,8 @@ def detect_image_defects(image):
         'image': base64_jpg.decode('utf-8'),
         'color-mappings': {
             'knot': (255, 0, 0),
-            # 'crack': (0, 255, 0),
-            # 'stain': (0, 0, 255)
+            'crack': (0, 255, 0),
+            'stain': (0, 0, 255)
         }
     }
 
