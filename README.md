@@ -17,10 +17,12 @@ ahorrando costes de madera desperdiciada y/o piezas con defectos.
 
 ## Como desplegar y testear
 
-Para deplegar y testear la última versión, tan solo hay que ejecutar el contenedor docker que contiene esta versión.
+Para deplegar y testear la última versión es necesario disponer de [Docker](https://www.docker.com) instalado.
+
+A continuación hay que ejecutar el contenedor docker que contiene la última versión de la aplicación.
 
 ```
-docker run -p 8080:8080 dmariaa/aiyc-defect-detector:v1.0.0
+docker run -it --rm -p 8080:8080 dmariaa/aiyc-defect-detector:latest
 ```
 
 Una vez ejecutado, tan solo hay que abrir un navegador web y acceder a:
