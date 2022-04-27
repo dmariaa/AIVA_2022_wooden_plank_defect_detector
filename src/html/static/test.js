@@ -6,8 +6,9 @@ https://css-tricks.com/drag-and-drop-file-uploading/
 (function() {
     let button = document.querySelector('.upload-button');
     let test = document.querySelector('div.test');
-    let image = document.querySelector('div.image')
-    let prediction = document.querySelector('div.prediction')
+    let image = document.querySelector('div.image');
+    let prediction = document.querySelector('div.prediction');
+    let elapsedBox = document.querySelector('div.results-time');
 
     function getBase64(file) {
       return new Promise((resolve, reject) => {
@@ -34,11 +35,17 @@ https://css-tricks.com/drag-and-drop-file-uploading/
             }
         };
 
+        const start = performance.now();
+
         let request = new XMLHttpRequest();
 
         request.onreadystatechange = () => {
             if(request.readyState === 4) {
                 if(request.status === 200) {
+                    const end = performance.now();
+                    const elapsed = Math.round((end - start) / 10) / 100
+                    elapsedBox.textContent = `Tiempo de respuesta: ${elapsed} segundos`;
+
                     const response_message = JSON.parse(request.responseText);
                     const pred = response_message.data;
                     let pred_img = document.createElement('img')
