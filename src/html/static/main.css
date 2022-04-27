@@ -49,14 +49,25 @@ div.test.dragover, div.test.dragover * {
 
 div.results {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 16px;
 }
 
-div.results .image {
+div.results-time {
+    text-align: center;
+    font-size: 0.95em;
+}
+
+div.results-images {
+    display: flex;
+    flex-direction: row;
+    padding: 8px 16px;
+}
+
+div.results .results-images .image {
     margin-right: 4px;
 }
 
-div.results .prediction {
+div.results .results-images .prediction {
     margin-left: 4px;
 }
